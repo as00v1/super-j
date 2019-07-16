@@ -1,6 +1,6 @@
 ## Java深入知识
 
-这里面包含更深一点的Java知识，涉异常处理、序列化等。
+这里面包含更深一点的Java知识，涉异常处理、序列化、反射操作等。
 
 ### **1. Java异常处理的结构？**
    
@@ -10,6 +10,8 @@
 
 >异常的类图如图：  
 ![](images/exception.png)
+
+*PS. 刚开始学习Java的时候，总觉得异常处理是个鸡肋的玩意，当时认为只要代码逻辑完善就永远不需要进行异常捕获和处理。后来实际工作中发现，总有异常是意想不到的发生，为了程序的稳定性、健壮性和体验友好，异常处理是非常重要的，希望初学者看到此处能够先树立好异常处理的观念，大佬请略过~*
 
 ### **2. Throwable类常用方法？**
  * `public string getMessage()`：返回异常发生时的详细信息，比较详细，一般记录进error级别的日志中
@@ -24,7 +26,7 @@
 * `catch`：用于对捕获的异常进行业务处理，通常是记录日志并返回友好的错误信息
 * `finally`：无论什么情况，finally块中的代码总会被执行。除非代码块中出现异常，或者线程被终止、CPU关闭。
 
-*P.S：以下代码块，入参为2时返回值是什么？*
+*PS.以下代码块，入参为2时返回值是什么？*
 ```java
 public static int func(int value) {
     try {
@@ -42,12 +44,60 @@ public static int func(int value) {
 
 * **序列化**：将对象转换为字节序列的过程。
 
- Java提供了java.io.ObjectOutputStream类来完成对对象的序列化操作，如下：
+Java提供了java.io.ObjectOutputStream类来完成对对象的序列化操作，要序列化的对象的类必须实现java.io.Serializable接口，否则会抛出异常。序列化代码如下如下：
+```java
+private static void ser(Object o) {
+    ObjectOutputStream os = null;
+    try {
+        os = new ObjectOutputStream(new FileOutputStream(new File("1.txt")));
+        os.writeObject(o);
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        if (os != null) {
+            try {
+                os.close();
+            } catch (IOException e) {}
+        }
+    }
+}
+```
+*PS. 这里使用了一个文件保存了序列化后的内容，其实序列化不仅仅可以保存到磁盘文件里，也可以保存到数组、缓冲区内，都可以通过ObjectOutputStream的构造方法实现，感兴趣的话可以试试。  
+另外，我个人理解的序列化也不仅仅是把对象转化为二进制，广义上来说，任何可以**把对象转化为某个序列进行持久存储**的方式我认为都是一种序列化，比如把对象转化为Json格式字符串存储。*
+
+* **反序列化**：将字节序列转化为对象的过程。  
+Java提供了java.io.ObjectInputStream类来完成对对象的反序列化操作，如下：
+```java
+private static Object deser() {
+    Object o = null;
+    ObjectInputStream os = null;
+    try {
+        os = new ObjectInputStream(new FileInputStream(new File("1.txt")));
+        o = os.readObject();
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+    } finally {
+        if (os != null) {
+            try {
+                os.close();
+            } catch (IOException e) {}
+        }
+    }
+    return o;
+}
+```
+可以理解反序列化就是按照序列化时的写入方式再把对象还原的过程。
+
+### **5. 如果有些字段不想进行序列化，怎么办？**
+Java提供了`transient`关键字，可以声明此属性不被序列化。
+
+### **6. 什么是反射？如何进行反射？**
 
 
-
-* **反序列化**：将字节序列转化为对象的过程。
-
-5. 什么是反射？如何进行反射？
-
-6. 如何通过反射获取到类的属性信息？
+### **7. 如何通过反射获取到类的属性信息？**
