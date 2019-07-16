@@ -30,3 +30,4 @@ Servlet在web容器启动时就完成了实例化，在整个web应用的生命�
 
 ### **5. JSP是什么？**
 Java Server Pages简称JSP，看名字理解，它是一种运行在服务器上的页面，使用Java语言创建。与Servlet类似，它也能够处理用户请求，不同的是，Servlet的应用逻辑是在Java文件中，并且完全从表示层中的HTML分离开来，而JSP的情况是Java和HTML组合成一个扩展名为.jsp的文件。因此在MVC设计模式中，JSP更多的是作为view层，而Servlet是作为Controller层存在。
+
