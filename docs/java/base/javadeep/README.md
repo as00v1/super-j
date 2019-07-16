@@ -2,7 +2,7 @@
 
 这里面包含更深一点的Java知识，涉异常处理、序列化等。
 
-1. **Java异常处理的结构？**
+### **1. Java异常处理的结构？**
    
 在 Java 中，所有的异常都有一个共同的祖先java.lang包中的 Throwable类。Throwable有两个重要的子类：
 * **Exception**（异常）：指程序可以处理的异常情况，通常是由于开发人员的逻辑问题引起，通过try-catch块可以进行处理。常见的有：NullPointerException（空指针异常，访问的对象方法或属性时，对象没有指向任何实例）、ArrayIndexOutOfBoundsException（数组越界异常，数组下标超出了数组所在内存范围）
