@@ -104,6 +104,81 @@ Java提供了`transient`关键字，可以声明此属性不被序列化。
 
 用通俗的话讲，在Java中反射我理解是指一个对象在编译时并不确定对象是否生成，而是在运行期动态生成对象的一种技术。反射的意义在于在程序运行时可以加载和运行任意可以通过编译时运行的类或方法。
 
-### **7. Java中如何进行反射？**
+### **7. Java中反射有哪些玩法？**
+这个问题在面试中一般就是考察点实际的东西，因为反射这个东西理论太枯燥了，如果能说出来点实际的东西证明你会玩，那我觉得反射这块已经没什么可以再深究的了。  
+现在我们先简单创建一个类，包含一个构造方法和两个属性：
+```java
+public class Person {
 
-### **8. 如何通过反射获取到类的属性信息？**
+	private String name;
+	private int age;
+	
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+	
+	public void print() {
+		System.out.println("name = " + name + ", age = " + age);
+	}
+}
+```
+然后，创建一个测试类：
+```java
+public class Test {
+
+	public static void main(String[] args) {
+		try {
+			// 获取类信息
+			Class<Person> clazz = Person.class;
+			// 通过类的全限定名获取类信息
+//			Class<Person> clazz = (Class<Person>) Class.forName("com.test.reflect.Person");
+			System.out.println("类的名称：");
+			System.out.println(clazz.getName());
+			System.out.println("类的属性列表：");
+			Field[] fields = clazz.getFields();
+			for (Field field : fields) {
+				System.out.println(field.getType().getName() + " " + field.getName());
+			}
+			System.out.println("类的方法列表：");
+			Method[] methods = clazz.getMethods();
+			for (Method method : methods) {
+				// 方法的返回值类型  和  方法名称
+				System.out.print(method.getReturnType().getName() + " " + method.getName() + "(");
+				// 方法的参数类型
+				Class<?>[] parameterTypes = method.getParameterTypes();
+				for (Class<?> parameterType : parameterTypes) {
+					System.out.print(" " + parameterType.getName());
+				}
+				System.out.println(")");
+			}
+			System.out.println("构造方法：");
+			Constructor<?>[] cons = clazz.getConstructors();
+			for (Constructor<?> constructor : cons) {
+				// 构造方法名称
+				System.out.print(constructor.getName() + "(");
+				// 构造方法的参数类型
+				Class<?>[] parameterTypes = constructor.getParameterTypes();
+				for (Class<?> parameterType : parameterTypes) {
+					System.out.print(" " + parameterType.getName());
+				}
+				System.out.println(")");
+			}
+			
+			System.out.println("创建实例：");
+			// 使用第1个构造方法实例化
+			Person person = (Person)cons[0].newInstance("张三", 1);
+			person.print();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+如果不想看代码，记住以下几个关键类：
+
+* **java.lang.Class**：关键类，封装了**类**的信息和各种操作类的方法，如类的全限定名、获取类的属性列表、获取方法和构造方法列表等等
+* **java.lang.reflect.Field**：封装了**属性**的信息，可以获取属性的名称、类型等
+* **java.lang.reflect.Method**：封装了**方法**的信息，可以通过此类型的实例获取方法名、返回值、入参格式、异常类型等
+* **java.lang.reflect.Constructor**：封装了**构造方法**的信息，可以获取构造方法的参数类型等，并且可以通过此类的实例调用`newInstance`方法创建类的实例
