@@ -15,9 +15,9 @@
 * [Java理论](docs/java/base/theory/README.md)
 * [Java基础](docs/java/base/javabase/README.md)
 * [Java深入](docs/java/base/javadeep/README.md)
-* [J2EE基础概览](docs/java/base/j2ee/README.md)
+* [J2EE概览](docs/java/base/j2ee/README.md)
 
-2. 容器
-3. IO
-4. 并发
-5. JVM
+1. 容器
+2. IO
+3. 并发
+4. JVM
