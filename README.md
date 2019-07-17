@@ -6,18 +6,18 @@
 
 知识点资料来源于网络，因此若有侵权或需要标明出处，请立即联系我！
 
+# 目录
 ## 一、Java篇
+### 1. [Java基本知识](docs/java/base/README.md)
 
-1. [Java语言](docs/java/base/README.md)
+此模块是Java基础部分，从Java偏向理论方面的知识，到一些Java思想和J2EE的知识点，适合任何Java开发和学习的同学进行知识回顾~
 
-    此模块是Java基础部分，主要是一些Java偏向理论方面的知识，和一些Java思想方面，适合任何Java开发和学习的同学~
-
-* [Java理论](docs/java/base/theory/README.md)
-* [Java基础](docs/java/base/javabase/README.md)
-* [Java深入](docs/java/base/javadeep/README.md)
-* [J2EE概览](docs/java/base/j2ee/README.md)
-
-1. 容器
+1. [Java理论](docs/java/base/theory/README.md) （Java基本概念阐述、通用名词解释，不涉及实际语法）
+2. [Java基础](docs/java/base/javabase/README.md) （Java基本语法、名词解释，包括基本类型、方法等）
+3. [Java深入](docs/java/base/javadeep/README.md) （Java深入一些的用法，包括异常处理、序列化、反射等）
+4. [J2EE概览](docs/java/base/j2ee/README.md) （JavaWeb必备，回归Servlet和JSP）
+### 2. Java必备知识
+1. 集合
 2. IO
 3. 并发
 4. JVM
