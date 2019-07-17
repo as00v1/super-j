@@ -18,7 +18,7 @@
 - [J2EE概览](docs/java/base/j2ee/README.md) （JavaWeb必备，回归Servlet和JSP）
 ### 2. Java必备知识
 - 集合
-  - [集合常见问题](docs/java/collection/base/readme.md)
+  - [集合常见问题](docs/java/collection/base/README.md)
 - IO
 - 并发
 - JVM
