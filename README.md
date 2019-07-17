@@ -23,6 +23,55 @@
 - 并发
 - JVM
 
+## 二、框架篇
+### 1. 开发框架
+- Spring
+    - Spring常见问题
+    - Spring IoC深入
+    - Spring AOP深入
+- SpringMVC
+    - SpringMVC常见问题
+- MyBatis
+    - MyBatis常见问题
+- Springboot
+    - Springboot常见问题
+
+### 2. 分布式框架
+- dubbo
+- zookeeper
+- SpringCloud
+
+## 三、数据库
+### 1. MySQL
+- MySQL常见问题
+- MySQL索引
+- 数据库优化建议
+
+### 2. Redis
+- Redis常见问题
+
+## 四、中间件
+### 1. 消息队列
+- RabbitMQ
+- kafka常见问题
+### 2. 搜索引擎
+- solr、Elasticsearch常见问题
+### 3.容器
+- web容器tomcat
+- docker
+
+## 五、设计模式
+### 常见设计模式问题
+
+## 六、架构
+### 1. 微服务
+### 2. 高可用架构
+
+## 七、计算机基础
+### 1. 计算机网络
+- 计算机网络常见问题
+- 计算机操作系统常见问题
+
 
 # 联系我
 
