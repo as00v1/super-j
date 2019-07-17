@@ -8,7 +8,7 @@
 
 # 目录
 ## 一、Java篇
-### 1. [Java基本知识](docs/java/base/README.md)
+### 1. Java基本知识
 
 此模块是Java基础部分，从Java偏向理论方面的知识，到一些Java思想和J2EE的知识点，适合任何Java开发和学习的同学进行知识回顾~
 
@@ -16,10 +16,13 @@
 - [Java基础](docs/java/base/javabase/README.md) （Java基本语法、名词解释，包括基本类型、方法等）
 - [Java深入](docs/java/base/javadeep/README.md) （Java深入一些的用法，包括异常处理、序列化、反射等）
 - [J2EE概览](docs/java/base/j2ee/README.md) （JavaWeb必备，回归Servlet和JSP）
-### 2. Java必备知识
+### 2. Java进阶知识
 - 集合
   - [集合常见问题](docs/java/collection/base/README.md)
+  - HashMap常见问题及关键源码
+  - ArrayList常见问题及关键源码
 - IO
+  - BIO/NIO/AIO问题
 - 并发
 - JVM
 
