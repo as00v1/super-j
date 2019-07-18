@@ -10,20 +10,20 @@
 #### 构造方法源码：
 HashMap有四个构造方法：
 ```java
-// 默认的无参构造方法，初始化了负载因子为默认的0.75
+// 一、默认的无参构造方法，初始化了负载因子为默认的0.75
 public HashMap() {
     this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
 }
-// 指定数组初始大小的构造方法，实际调用下面的构造方法
+// 二、指定数组初始大小的构造方法，实际调用下面的构造方法
 public HashMap(int initialCapacity) {
     this(initialCapacity, DEFAULT_LOAD_FACTOR);
 }
-// 使用另一个Map的实例构造HashMap实例，比如将TreeMap快速转化为HashMap
+// 三、使用另一个Map的实例构造HashMap实例，比如将TreeMap快速转化为HashMap
 public HashMap(Map<? extends K, ? extends V> m) {
     this.loadFactor = DEFAULT_LOAD_FACTOR;
     putMapEntries(m, false);
 }
-// 同时指定初始容量和负载因子的构造方法
+// 四、同时指定初始容量和负载因子的构造方法
 public HashMap(int initialCapacity, float loadFactor) {
     if (initialCapacity < 0)
         // 初始容量小于0，抛出异常
@@ -60,7 +60,7 @@ static final int tableSizeFor(int cap) {
 }
 ```
 没看懂移位那块的注释没关系，来个图理解下当入参为10时的运算过程：
->![](images/tableSizeFor.png)  
+>![](./images/tableSizeFor.png)  
 [图片来源](https://www.jianshu.com/p/cbe3f22793be)
 
 #### put()源码(JDK1.8):
