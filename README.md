@@ -19,7 +19,7 @@
 ### 2. Java进阶知识
 - 集合
   - [集合常见问题](docs/java/collection/base/README.md)
-  - HashMap常见问题及关键源码
+  - [HashMap常见问题及关键源码](./docs/java/collection/hashmap/README.md)
   - ArrayList常见问题及关键源码
 - IO
   - BIO/NIO/AIO问题

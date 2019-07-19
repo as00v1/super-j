@@ -64,6 +64,7 @@ static final int tableSizeFor(int cap) {
 [图片来源](https://www.jianshu.com/p/cbe3f22793be)
 
 #### put()源码(JDK1.8):
+以下为HashMap在JDK1.8的源码，JDK1.7中没有红黑树的相关操作
 ```java
 public V put(K key, V value) {
     // 直接调用了putVal方法
@@ -134,18 +135,55 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
 - 这个方法内部是没有锁机制的，所以线程不安全
 - hash冲突时的解决逻辑是充分考虑大部分场景的使用习惯的，因为它没有直接遍历树或者链表去放值而是先比较第一个节点，在平时多用String类型作为key，在hash冲突时必然会覆盖之前的值，减少了put操作的复杂度
 
+### 为什么链表到达一定程度时，要转化成红黑树呢？二叉查找树或者平衡二叉查找树可以吗？
+- 链表是线性结构，在链表中查找节点时要从头节点开始遍历链表，随着链表的增加，查找时间也会增加
+- 红黑树是一种自平衡二叉查找树，查找的最坏时间复杂度为O(logn)，因为其特性所以它的插入时自平衡的效率要高于平衡二叉查找树（*这块我也没有深入研究，还是因为菜*）
+- 二叉查找树更不可以了，因为当新加节点一直比根节点大或者一直小的话，它就退化成了一个链表
 
-### 为什么链表到达一定程度时，要转化成红黑树呢？二叉树可以吗？
-
+附：红黑树的特性:
+>
+- 节点是红色或黑色。
+- 根是黑色。
+- 所有叶子都是黑色（叶子是NIL节点）。
+- 每个红色节点必须有两个黑色的子节点。（从每个叶子到根的所有路径上不能有两个连续的红色节点。）
+- 从任一节点到其每个叶子的所有简单路径都包含相同数目的黑色节点。  
+![](./images/Red-black_tree_example.png)  
+----来自[维基百科](https://zh.wikipedia.org/wiki/%E7%BA%A2%E9%BB%91%E6%A0%91)
 
 ### HashMap是线程安全的吗？
+通过HashMap源码可知，不是。要想线程安全，使用[ConcurrentHashMap](#ConcurrentHashMap%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8HashTable)。
 
 ### ConcurrentHashMap如何保证线程安全的？为什么不用HashTable？
+`ConcurrentHashMap`在JDK1.8中也被优化了，我们分开看：  
+1. 在JDK1.8之前，采用分段数组的方式，每段数组单独加锁，如图：
+>![](./images/segment.png)  
+来源：[ConcurrentHashMap实现原理及源码分析](https://www.cnblogs.com/chengxiao/p/6842045.html)
 
-### HashMap扩容机制？
+`Segment`继承了`ReentrantLock`，所以它作为了一个**可重入锁**。在`ConcurrentHashMap`，维护了一个`Segment`数组，每个`Segment`维护一个`HashEntry`数组，并发环境下，对于不同`Segment`的数据进行操作是不用考虑锁竞争的，所以效率会高一些。
 
-### 为什么每次扩容都要到2的n次方？
-https://blog.csdn.net/justloveyou_/article/details/62893086
+2. 从JDK1.8开始，`ConcurrentHashMap`取消了`Segment`分段锁，采用CAS和`synchronized`来保证并发安全。数据结构跟`HashMap`的结构类似(数组+链表/红黑二叉树)，如图：
+>![](./images/JDK1.8-ConcurrentHashMap-Structure.jpg)
+
+`synchronized`只锁定当前链表或红黑二叉树的首节点，这样只要hash不冲突，就不会产生并发，效率又提升N倍。
+
+3. 至于现在为什么不用HashTable，看过源码一下就明白了：HashTable内部是直接在方法上加入`synchronized`来处理并发的，所以不管会不会发生并发问题，都要进行锁竞争，因此会很慢，一张图作对比：  
+>![](./images/HashTable.png)
+
+### 为什么数组大小一定是2的n次方（每次扩容都要到2的n次方）？
+
+通过`tableSizeFor()`方法可以看到，`HashMap`并不是每次都用我们制定的大小去初始化数组的，而是将我们指定大小向上计算为最接近的2的n次方，如我们指定13，那么实际初始化的大小就是16，指定17就是32。
+我是这么个思路：
+1. 先看下`putVal()`方法里计算key位置的算法：
+```java
+// n为数组大小，hash为hash(Object key)方法计算结果
+// 在数组大小为2的幂次方的前提下，这里等同于hash%n，但是位运算效率更高
+i = (n - 1) & hash
+```
+
+2. 可以发现，当n为2的幂次方时，n-1的二进制就全为1，比如默认n是16，二进制为`10000`，那n-1的二进制就是`1111`，保持了相对稳定，在与hash进行&运算时，运算结果是由key的hash值决定的。  
+试想：如果n可以是任意值（比如17，二进制10001），那计算结果很有可能计算结果大量相同（结果集中在`10001/10000/00000/00001`），导致**数组分布不均匀**
+
+>更详细的解释请看[这篇博客](https://blog.csdn.net/zjcjava/article/details/78495416)
 
 ### 一百万个key-value键值对要放到HashMap里，需要注意什么？
 
