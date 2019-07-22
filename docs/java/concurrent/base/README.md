@@ -61,6 +61,7 @@ Java 线程在运行的生命周期中的指定时刻只可能处于下面 6 种
 Java 线程状态变迁如下图所示:
 
 ![](./images/Java-thread-status-change.png)
+
 由上图可以看出Java中线程的生命周期：
 
 1. 线程创建之后它将处于`NEW`（创建）状态，调用`start()`方法后开始运行，线程这时候处于`READY`（就绪）状态。可运行状态的线程获得了CPU时间片（timeslice）后就处于 `RUNNING`（运行）状态；
