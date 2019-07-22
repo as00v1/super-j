@@ -21,9 +21,10 @@
   - [集合常见问题](docs/java/collection/base/README.md)
   - [HashMap常见问题及关键源码](./docs/java/collection/hashmap/README.md)
   - ArrayList常见问题及关键源码
+- 并发
+  - [并发基础知识](./docs/java/concurrent/base/README.md)（线程、进程、死锁等）
 - IO
   - BIO/NIO/AIO问题
-- 并发
 - JVM
 
 ## 二、框架篇
