@@ -109,7 +109,8 @@ public ThreadPoolExecutor(int corePoolSize,
 - **handler**：拒绝策略。用于当前线程达到`maximumPoolSize`时，线程池该怎么处理新来的任务，默认是抛出异常。
 
 ### 阻塞队列有哪些？
-- **LinkedBlockingQueue**：
+*注意：这里的阻塞队列并不是只在线程池中使用的*
+- **LinkedBlockingQueue**：基于数组实现的一个阻塞队列，在创建ArrayBlockingQueue对象时必须制定容量大小。并且可以指定公平性与非公平性，默认情况下为非公平的，即不保证等待时间最长的队列最优先能够访问队列。
 - **SynchronousQueue**：
 - **ArrayBlockingQueue**：
 - **PriorityBlockingQueue**：
